@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>古嚴寺 youtube 影片資料搜尋</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/sql-wasm.js"></script>
+    <script src="base64Database.js"></script>
+  </head>
+  <body>
+    <div class="background-container">
+      <div class="content-wrapper">
+        <h1>古嚴寺 youtube 影片資料搜尋</h1>
+        <p class="channel-link">
+          <a href="https://www.youtube.com/@ksguyan" target="_blank"
+            >頻道連結</a
+          >
+        </p>
+        <div class="search-box">
+          <input type="text" id="query" placeholder="請輸入關鍵字" />
+          <button onclick="executeQuery()">搜尋</button>
+        </div>
+        <div id="results-container">
+          <div class="results-header">
+            <h2>搜尋結果</h2>
+            <span id="result-count"></span>
+          </div>
+          <div id="results"></div>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
