@@ -1,65 +1,20 @@
-let db;
+// display.js
 
-// 將 base64 編碼的資料庫轉換為二進制數組
-const binaryString = atob(base64Database);
-const bytes = new Uint8Array(binaryString.length);
-for (let i = 0; i < binaryString.length; i++) {
-  bytes[i] = binaryString.charCodeAt(i);
-}
-
-// 初始化 SQL.js
-const SQL = window.initSqlJs({
-  locateFile: (file) =>
-    `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/${file}`,
-});
-
-// 載入資料庫
-SQL.then((SQL) => {
-  db = new SQL.Database(bytes);
-  console.log("資料庫已成功載入");
-}).catch((error) => {
-  console.error("資料庫載入失敗:", error);
-});
-
-// 執行 SQL 查詢
-function executeQuery() {
-  const keyword = document.getElementById("query").value.trim();
-  let query;
-  // table: videos
-  // column: number, title, video_id, url, published_at, duration, description
-  if (keyword) {
-    // 將關鍵字轉換為 SQL 查詢
-    query = `SELECT  number, title, url, published_at, duration, description FROM videos WHERE title LIKE '%${keyword}%' OR description LIKE '%${keyword}%'`;
-  } else {
-    // 如果沒有輸入關鍵字，顯示所有結果
-    query =
-      "SELECT number, title, url, published_at, duration, description FROM videos";
-  }
-
-  try {
-    const results = db.exec(query);
-    displayResults(results);
-  } catch (e) {
-    document.getElementById(
-      "results"
-    ).innerHTML = `<p class="error">錯誤: ${e.message}</p>`;
-  }
-}
+// 欄位名稱轉換對照表
+const columnTranslation = {
+  number: "編號",
+  title: "影片標題",
+  published_at: "上傳時間",
+  duration: "影片長度",
+  description: "影片說明",
+};
 
 // 顯示搜尋結果
 function displayResults(results) {
+  currentResults = results;
   const resultsContainer = document.getElementById("results");
   const resultCount = document.getElementById("result-count");
   const keyword = document.getElementById("query").value.trim();
-
-  // 欄位名稱轉換對照表
-  const columnTranslation = {
-    number: "編號",
-    title: "影片標題",
-    published_at: "上傳時間",
-    duration: "影片長度",
-    description: "影片說明",
-  };
 
   // 如果沒有結果，顯示提示訊息
   if (results.length === 0) {
@@ -82,16 +37,17 @@ function displayResults(results) {
         .filter((col) => col.toLowerCase() !== "url")
         .map((col) => {
           const columnName = col.toLowerCase();
-          let className = "";
-          if (columnName === "number") className = "fixed-width number-column";
+          let className = "sortable"; // 添加 sortable 類
+          if (columnName === "number")
+            className += " fixed-width number-column";
           else if (columnName === "published_at")
-            className = "fixed-width date-column";
+            className += " fixed-width date-column";
           else if (columnName === "duration")
-            className = "fixed-width duration-column";
-          else if (columnName === "title") className = "title-column";
+            className += " fixed-width duration-column";
+          else if (columnName === "title") className += " title-column";
           else if (columnName === "description")
-            className = "description-column";
-          return `<th class="${className}">${
+            className += " description-column";
+          return `<th id="${columnName}" class="${className}">${
             columnTranslation[columnName] || col
           }</th>`;
         })
@@ -201,19 +157,67 @@ function formatDuration(duration) {
   ].join(":");
 }
 
-// 在文檔加載完成後執行
-document.addEventListener("DOMContentLoaded", function () {
-  // 獲取輸入框元素
-  const queryInput = document.getElementById("query");
+// 排序結果的函數
+function sortResults(column) {
+  if (column === currentSortColumn) {
+    isAscending = !isAscending;
+  } else {
+    currentSortColumn = column;
+    isAscending = true;
+  }
 
-  // 為輸入框添加鍵盤事件監聽器
-  queryInput.addEventListener("keypress", function (event) {
-    // 檢查是否按下了 Enter 鍵（keyCode 13）
-    if (event.key === "Enter") {
-      // 阻止默認的表單提交行為
-      event.preventDefault();
-      // 執行搜尋
-      executeQuery();
+  currentResults.forEach((result) => {
+    const columnIndex = result.columns.findIndex(
+      (col) => columnTranslation[col.toLowerCase()] === column
+    );
+    if (columnIndex !== -1) {
+      result.values.sort((a, b) => {
+        let valueA = a[columnIndex];
+        let valueB = b[columnIndex];
+
+        if (column === "編號") {
+          return isAscending ? valueA - valueB : valueB - valueA;
+        } else if (column === "上傳時間") {
+          return isAscending
+            ? new Date(valueA) - new Date(valueB)
+            : new Date(valueB) - new Date(valueA);
+        } else if (column === "影片長度") {
+          // 將時間轉換為秒數進行比較
+          const secondsA = convertDurationToSeconds(valueA);
+          const secondsB = convertDurationToSeconds(valueB);
+          return isAscending ? secondsA - secondsB : secondsB - secondsA;
+        } else {
+          return isAscending
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        }
+      });
     }
   });
-});
+
+  displayResults(currentResults);
+}
+
+// 將持續時間轉換為秒數的輔助函數
+function convertDurationToSeconds(duration) {
+  const matches = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  if (!matches) return 0;
+
+  const hours = parseInt(matches[1] || 0);
+  const minutes = parseInt(matches[2] || 0);
+  const seconds = parseInt(matches[3] || 0);
+
+  return hours * 3600 + minutes * 60 + seconds;
+}
+
+let currentResults = [];
+let currentSortColumn = "";
+let isAscending = true;
+
+export {
+  displayResults,
+  highlightKeyword,
+  formatDate,
+  formatDuration,
+  sortResults,
+};
