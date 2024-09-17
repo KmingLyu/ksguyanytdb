@@ -32,7 +32,7 @@ function displayResults(results) {
 
     // 添加表頭
     html +=
-      "<tr>" +
+      "<thead><tr>" +
       result.columns
         .filter((col) => col.toLowerCase() !== "url")
         .map((col) => {
@@ -52,7 +52,7 @@ function displayResults(results) {
           }</th>`;
         })
         .join("") +
-      "</tr>";
+      "</tr></thead><tbody>";
 
     // 添加表格內容
     result.values.forEach((row) => {
@@ -91,7 +91,7 @@ function displayResults(results) {
       });
       html += "</tr>";
     });
-    html += "</table>";
+    html += "</tbody></table>";
   });
 
   // 更新結果數量

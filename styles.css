@@ -22,10 +22,6 @@ a:hover {
 /* 版面容器 */
 .background-container {
   background-color: #f0e6d2;
-  background-image: url("path/to/subtle-texture.png"); /* 添加微妙的紙張紋理 */
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
   max-height: 90vh;
   min-height: 90vh;
   display: flex;
@@ -102,15 +98,22 @@ button:hover {
   padding: 20px;
 }
 
+#results {
+  max-height: 60vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 4px;
+}
+
 .results-header {
   position: sticky;
   top: 0;
+  z-index: 1;
   background-color: #fff;
   padding: 10px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #d4b483;
 }
 
 #result-count {
@@ -123,68 +126,55 @@ table {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  border-spacing: 0;
+  margin-bottom: 0;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 th,
 td {
   text-align: left;
   padding: 8px;
-  border: 1px solid #d4b483;
-  overflow-wrap: break-word; /* 允許長單詞換行 */
-  word-wrap: break-word; /* 舊瀏覽器兼容 */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  /* border: 1px solid #d4b483; */
+  /* position: relative; */
 }
 
 th {
-  background-color: #f0e6d2;
+  background-color: #fff; /* 稍微淺一些的背景色 */
   font-weight: bold;
   color: #8e6f3e;
   cursor: pointer;
+  z-index: 0;
 }
 
-th.sortable {
-  user-select: none;
-  position: relative;
-  transition: all 0.1s ease-in-out;
+th:hover {
+  background-color: #e7e5de; /* 淺一些的懸停顏色 */
 }
 
-th.sortable:hover {
-  background-color: #e8d8b8;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #d4b483;
+th:active {
+  background-color: #e5ddc5; /* 淺一些的點擊顏色 */
 }
-
-th.sortable:active {
-  background-color: #d4b483;
-}
-
-/* 可選的排序指示符 */
-/*
-th.sortable::after {
-  content: "⇅";
-  position: absolute;
-  right: 8px;
-  opacity: 0.5;
-  transition: all 0.1s ease-in-out;
-}
-
-th.sortable:hover::after {
-  opacity: 1;
-  transform: scale(1.2);
-}
-*/
 
 tr:nth-child(even) {
-  background-color: #fdfbf7;
+  background-color: #fff4df; /* 偶數行背景，與整體背景色相協調 */
 }
 
 tr:nth-child(odd) {
-  background-color: #fff;
+  background-color: #fffdf9; /* 奇數行背景，略淺於偶數行 */
 }
 
 /* 表格欄位寬度 */
 .fixed-width {
-  width: 100px; /* 可根據需要調整 */
+  width: 100%; /* 可根據需要調整 */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
