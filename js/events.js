@@ -1,31 +1,59 @@
 // events.js
 
-import { executeQuery } from "./query.js";
-import { sortResults } from "./display.js";
+import { executeVideoQuery, executePlaylistQuery } from "./query.js";
+import { sortVideoResults, sortPlaylistResults } from "./display.js";
 
 // 在文檔加載完成後執行
 document.addEventListener("DOMContentLoaded", function () {
-  // 獲取輸入框元素
-  const queryInput = document.getElementById("query");
+  // Tab 切換功能
+  const videosTab = document.getElementById("videos-tab");
+  const playlistsTab = document.getElementById("playlists-tab");
+  const videosSection = document.getElementById("videos-section");
+  const playlistsSection = document.getElementById("playlists-section");
 
-  // 為輸入框添加鍵盤事件監聽器
-  queryInput.addEventListener("keypress", function (event) {
-    // 檢查是否按下了 Enter 鍵
+  videosTab.addEventListener("click", function () {
+    videosTab.classList.add("active");
+    playlistsTab.classList.remove("active");
+    videosSection.classList.add("active");
+    playlistsSection.classList.remove("active");
+  });
+
+  playlistsTab.addEventListener("click", function () {
+    playlistsTab.classList.add("active");
+    videosTab.classList.remove("active");
+    playlistsSection.classList.add("active");
+    videosSection.classList.remove("active");
+  });
+
+  // 為影片搜尋添加事件
+  const videoQueryInput = document.getElementById("video-query");
+  videoQueryInput.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
-      // 阻止默認的表單提交行為
       event.preventDefault();
-      // 執行搜尋
-      executeQuery();
+      executeVideoQuery();
     }
   });
 
-  // 可選：為搜尋按鈕添加點擊事件
-  const searchButton = document.getElementById("search-button");
-  if (searchButton) {
-    searchButton.addEventListener("click", function () {
-      executeQuery();
-    });
-  }
+  const videoSearchButton = document.getElementById("video-search-button");
+  videoSearchButton.addEventListener("click", function () {
+    executeVideoQuery();
+  });
+
+  // 為播放清單搜尋添加事件
+  const playlistQueryInput = document.getElementById("playlist-query");
+  playlistQueryInput.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      executePlaylistQuery();
+    }
+  });
+
+  const playlistSearchButton = document.getElementById(
+    "playlist-search-button"
+  );
+  playlistSearchButton.addEventListener("click", function () {
+    executePlaylistQuery();
+  });
 
   // 為表格標題添加事件
   document.addEventListener("click", handleThClick);
@@ -36,7 +64,13 @@ function handleThClick(event) {
     event.target.tagName === "TH" &&
     event.target.classList.contains("sortable")
   ) {
-    sortResults(event.target.textContent);
+    const section = event.target.closest(".section");
+    const column = event.target.textContent;
+    if (section && section.id === "videos-section") {
+      sortVideoResults(column);
+    } else if (section && section.id === "playlists-section") {
+      sortPlaylistResults(column);
+    }
   }
 }
 

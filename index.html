@@ -3,35 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>古嚴寺 youtube 影片資料搜尋</title>
+    <title>古嚴寺 YouTube 影片資料搜尋</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/sql-wasm.js"></script>
-    <!-- <script src="base64Database.js"></script> -->
     <script type="module" src="js/main.js" defer></script>
   </head>
   <body>
     <div class="background-container">
       <div class="content-wrapper">
-        <h1>古嚴寺 youtube 影片資料搜尋</h1>
+        <h1>古嚴寺 YouTube 影片資料搜尋</h1>
         <p class="channel-link">
           <a href="https://www.youtube.com/@ksguyan" target="_blank"
             >頻道連結</a
           >
         </p>
-        <div class="search-box">
-          <input type="text" id="query" placeholder="請輸入關鍵字" />
-          <!-- <button onclick="executeQuery()">搜尋</button> -->
-          <button id="search-button">搜尋</button>
+
+        <!-- 導覽頁籤 -->
+        <div class="nav-tabs">
+          <button id="videos-tab" class="tab active">影片搜尋</button>
+          <button id="playlists-tab" class="tab">播放清單</button>
         </div>
-        <div id="results-container">
-          <div class="results-header">
-            <h2>搜尋結果</h2>
-            <span id="result-count"></span>
+
+        <!-- 影片搜尋區域 -->
+        <div id="videos-section" class="section active">
+          <div class="search-box">
+            <input
+              type="text"
+              id="video-query"
+              placeholder="請輸入影片關鍵字"
+            />
+            <button id="video-search-button">搜尋</button>
           </div>
-          <div id="results"></div>
+          <div id="video-results-container">
+            <div class="results-header">
+              <h2>影片搜尋結果</h2>
+              <span id="video-result-count"></span>
+            </div>
+            <div id="video-results"></div>
+          </div>
+        </div>
+
+        <!-- 播放清單區域 -->
+        <div id="playlists-section" class="section">
+          <div class="search-box">
+            <input
+              type="text"
+              id="playlist-query"
+              placeholder="請輸入播放清單關鍵字"
+            />
+            <button id="playlist-search-button">搜尋</button>
+          </div>
+          <div id="playlist-results-container">
+            <div class="results-header">
+              <h2>播放清單</h2>
+              <span id="playlist-result-count"></span>
+            </div>
+            <div id="playlist-results"></div>
+          </div>
         </div>
       </div>
     </div>
-    <!-- <script src="script.js"></script> -->
   </body>
 </html>
