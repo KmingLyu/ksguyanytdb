@@ -307,6 +307,10 @@ tr:nth-child(odd) {
     margin-top: 10px;
   }
 
+  #video-results-container {
+    padding: 0;
+  }
+
   .results-header {
     flex-direction: column;
     align-items: flex-start;
@@ -321,6 +325,15 @@ tr:nth-child(odd) {
   .date-column,
   .duration-column {
     width: auto;
+  }
+  .number-column {
+    display: none;
+  }
+  .fixed-width {
+    width: auto; /* 恢復為自動寬度 */
+    white-space: normal; /* 允許自動換行 */
+    overflow: visible; /* 讓內容不被隱藏 */
+    text-overflow: clip; /* 不使用省略號 */
   }
 }
 
