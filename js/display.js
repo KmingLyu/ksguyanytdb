@@ -70,9 +70,21 @@ function displayVideoResults(results) {
     // 添加表格內容
     result.values.forEach((row) => {
       html += "<tr>";
+
+      // 獲取必要欄位的索引
+      const numberIndex = result.columns.findIndex(
+        (col) => col.toLowerCase() === "number"
+      );
+      const titleIndex = result.columns.findIndex(
+        (col) => col.toLowerCase() === "title"
+      );
       const videoIdIndex = result.columns.findIndex(
         (col) => col.toLowerCase() === "video_id"
       );
+
+      // 獲取必要欄位的值
+      const number = row[numberIndex];
+      const title = row[titleIndex];
       const videoId = row[videoIdIndex];
 
       row.forEach((cell, index) => {
@@ -94,10 +106,33 @@ function displayVideoResults(results) {
           className = "title-column";
           const url =
             row[result.columns.findIndex((col) => col.toLowerCase() === "url")];
-          cellContent = `<a href="${url}" target="_blank">${highlightKeyword(
+
+          // 添加字幕連結
+          const videoIdIndex = result.columns.findIndex(
+            (col) => col.toLowerCase() === "video_id"
+          );
+          // 字幕檔名
+          const srtFileName = `${number}_${title}[${videoId}].srt`;
+
+          // 字幕檔github連結
+          const subtitlesUrl = `https://github.com/KmingLyu/ksguyanytdb/blob/main/data/srt/${encodeURIComponent(
+            srtFileName
+          )}`;
+          // 字幕檔連結
+          // const subtitlesUrl = `data/srt/${srtFileName}`;
+
+          const iconUrl = "img/subtitle.png";
+          const subtitlesIcon = `<a href="${subtitlesUrl}" target="_blank" title="影片字幕檔"><img src="${iconUrl}" alt="Subtitle" class="subtitle-icon-img"></a>`;
+
+          cellContent = `${subtitlesIcon} <a href="${url}" target="_blank">${highlightKeyword(
             cell,
             keyword
           )}</a>`;
+
+          // cellContent = `<a href="${url}" target="_blank">${highlightKeyword(
+          //   cell,
+          //   keyword
+          // )}</a>`;
         } else if (columnName === "description") {
           className = "description-column";
           cellContent = keyword ? highlightKeyword(cell, keyword) : cell;

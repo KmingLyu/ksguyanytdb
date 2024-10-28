@@ -14,7 +14,7 @@ function executeVideoQuery(sortColumn = "", sortOrder = "ASC") {
   let query;
 
   if (keyword) {
-    query = `SELECT v.number, v.title, v.url, v.published_at, v.duration, p.playlist_title, v.description, p.playlist_id
+    query = `SELECT v.number, v.title, v.url, v.published_at, v.duration, p.playlist_title, v.description, p.playlist_id, v.video_id
              FROM videos v
              INNER JOIN video_playlists vp ON v.video_id = vp.video_id
              INNER JOIN playlists p ON vp.playlist_id = p.playlist_id
@@ -22,7 +22,7 @@ function executeVideoQuery(sortColumn = "", sortOrder = "ASC") {
              OR v.description LIKE '%${escapeLike(keyword)}%'
              OR p.playlist_title LIKE '%${escapeLike(keyword)}%'`;
   } else {
-    query = `SELECT v.number, v.title, v.url, v.published_at, v.duration, p.playlist_title, v.description, p.playlist_id
+    query = `SELECT v.number, v.title, v.url, v.published_at, v.duration, p.playlist_title, v.description, p.playlist_id, v.video_id
              FROM videos v
              INNER JOIN video_playlists vp ON v.video_id = vp.video_id
              INNER JOIN playlists p ON vp.playlist_id = p.playlist_id`;

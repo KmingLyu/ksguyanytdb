@@ -247,6 +247,13 @@ tr:nth-child(odd) {
   white-space: normal;
 }
 
+.subtitle-icon-img {
+  width: 20px; /* 調整為合適的大小 */
+  /* height: 16px; */
+  /* vertical-align: middle; */
+  /* margin-right: 5px; */
+}
+
 /* 其他元件樣式 */
 .channel-link {
   text-align: center;
