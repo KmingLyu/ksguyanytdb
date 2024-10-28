@@ -121,7 +121,7 @@ function displayVideoResults(results) {
           // 字幕檔連結
           // const subtitlesUrl = `data/srt/${srtFileName}`;
 
-          const iconUrl = "img/subtitle.png";
+          const iconUrl = "img/sub5.png";
           const subtitlesIcon = `<a href="${subtitlesUrl}" target="_blank" title="影片字幕檔"><img src="${iconUrl}" alt="Subtitle" class="subtitle-icon-img"></a>`;
 
           cellContent = `${subtitlesIcon} <a href="${url}" target="_blank">${highlightKeyword(
