@@ -299,7 +299,7 @@ function showPlaylistVideos(playlistId) {
   const db = window.db; // 使用全局的 db 變量
   // 執行查詢，獲取該播放清單的影片
   const query = `
-    SELECT v.number, v.title, v.url, v.published_at, v.duration, p.playlist_title, v.description
+    SELECT v.number, v.title, v.url, v.published_at, v.duration, p.playlist_title, v.description, v.video_id
     FROM videos v
     INNER JOIN video_playlists vp ON v.video_id = vp.video_id
     INNER JOIN playlists p ON vp.playlist_id = p.playlist_id
