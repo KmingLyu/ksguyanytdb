@@ -246,6 +246,12 @@ tr:nth-child(odd) {
 .description-column {
   white-space: normal;
 }
+.title-column i {
+  margin-right: 5px;
+}
+.title-column i:hover {
+  color: #41321b;
+}
 
 .subtitle-icon-img {
   width: 20px; /* 調整為合適的大小 */

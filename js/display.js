@@ -121,8 +121,9 @@ function displayVideoResults(results) {
           // 字幕檔連結
           // const subtitlesUrl = `data/srt/${srtFileName}`;
 
-          const iconUrl = "img/sub5.png";
-          const subtitlesIcon = `<a href="${subtitlesUrl}" target="_blank" title="影片字幕檔"><img src="${iconUrl}" alt="Subtitle" class="subtitle-icon-img"></a>`;
+          // const iconUrl = "img/sub5.png";
+          // const subtitlesIcon = `<a href="${subtitlesUrl}" target="_blank" title="影片字幕檔"><img src="${iconUrl}" alt="Subtitle" class="subtitle-icon-img"></a>`;
+          const subtitlesIcon = `<a href="${subtitlesUrl}" target="_blank" title="影片字幕檔"><i class="fa-regular fa-file-lines"></i></a>`;
 
           cellContent = `${subtitlesIcon} <a href="${url}" target="_blank">${highlightKeyword(
             cell,
